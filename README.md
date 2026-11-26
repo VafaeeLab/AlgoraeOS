@@ -1,120 +1,219 @@
-# AlgoraeOS: Curated Drug Combination Dataset
+<div align="center">
 
-<p align="center">
+<a href="https://algoraepharma.com/algoraeos/">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/algorae_logo_reversed.svg">
-    <img src="assets/algorae_logo.svg" alt="Algorae Pharmaceuticals" height="60">
+    <img src="assets/algorae_logo.svg" alt="Algorae Pharmaceuticals" height="56">
   </picture>
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/vafaee_lab_logo.png" alt="Vafaee Lab, UNSW" height="60">
-</p>
+</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://vafaeelab.com/">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/vafaee_lab_logo_dark.png">
+    <img src="assets/vafaee_lab_logo.png" alt="UNSW Vafaee Lab, Biomedical AI Laboratory" height="64">
+  </picture>
+</a>
 
-<p align="center">
-  <a href="https://vafaeelab.github.io/AlgoraeOS_UI/"><b>Prediction portal</b></a> ·
-  <a href="https://www.biorxiv.org/content/10.1101/2025.11.05.686895v2"><b>Preprint (bioRxiv)</b></a> ·
-  <a href="#dataset"><b>Dataset</b></a> ·
-  <a href="#citation"><b>Citation</b></a>
-</p>
+# AlgoraeOS
 
-This repository holds the curated, pre-processed training data behind **AlgoraeOS**. It is released to support
-reproducibility and benchmarking against our method.
+### Curated drug combination dataset for calibrated, dose-specific synergy prediction
 
-## About AlgoraeOS
+[![Prediction portal](https://img.shields.io/badge/Prediction_portal-online-2a78d6?style=for-the-badge&logo=googlechrome&logoColor=white)](https://vafaeelab.github.io/AlgoraeOS_UI/)
+[![bioRxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2025.11.05.686895-b31b1b?style=for-the-badge)](https://www.biorxiv.org/content/10.1101/2025.11.05.686895v2)
 
-AlgoraeOS is an AI drug-combination discovery platform developed by the
+![Combinations](https://img.shields.io/badge/combinations-359%2C556-2a78d6)
+![Drugs](https://img.shields.io/badge/drugs-3%2C129-2a78d6)
+![Cell lines](https://img.shields.io/badge/cell_lines-170-2a78d6)
+![Tissues](https://img.shields.io/badge/tissues-15-2a78d6)
+![Synergy metrics](https://img.shields.io/badge/metrics-Loewe_·_Bliss_·_HSA_·_ZIP-555)
+![Source](https://img.shields.io/badge/source-DrugComb_v1.5-555)
+
+[**Overview**](#overview) · [**Dataset**](#the-dataset) · [**Quick start**](#quick-start) · [**How it was built**](#how-the-dataset-was-built) · [**Availability**](#data-and-code-availability) · [**Citation**](#citation)
+
+</div>
+
+---
+
+## Overview
+
+**AlgoraeOS** is an AI drug-combination discovery platform developed by the
 [UNSW Biomedical AI Laboratory (Vafaee Lab)](https://vafaeelab.com/) in partnership with
-[Algorae Pharmaceuticals](https://algoraepharma.com/algoraeos/) (ASX: 1AI).
+[Algorae Pharmaceuticals](https://algoraepharma.com/algoraeos/) (ASX: 1AI). At its core is a biologically informed,
+attention-aware deep neural network that predicts how two drugs interact in a given cancer cell line.
 
-At its core is a biologically informed, attention-aware deep neural network that predicts how two drugs interact in
-a given cancer cell line:
+This repository releases the **curated, pre-processed training data** behind AlgoraeOS to support reproducibility
+and benchmarking against our method. The model itself is proprietary; its predictions can be explored in the
+[**AlgoraeOS prediction portal**](https://vafaeelab.github.io/AlgoraeOS_UI/).
 
-- **Four synergy metrics at once.** It predicts Loewe, Bliss, HSA and ZIP together, preserving the relationships
-  between them.
-- **Calibrated confidence.** Each prediction comes with aleatoric (data) and epistemic (model) uncertainty.
-- **Dose-specific.** It reconstructs full dose–response (inhibition) surfaces, not just one averaged score.
-- **Biologically grounded inputs.** Drugs are represented by RDKit structural fingerprints and ChemBERTa SMILES
-  embeddings. Cell lines are represented by CCLE gene expression passed through a pathway-constrained (MSigDB) layer.
-- **Prospectively validated.** In an in vitro screen of an anchor compound that was absent from training, tested with
-  24 partner drugs across three cancer cell lines (2,592 dose–combination measurements), predictions preserved
-  rank order (Spearman's ρ = 0.51–0.59, P < 0.001). Uncertainty-guided prioritisation improved hit precision.
+<table>
+<tr>
+<td width="33%" valign="top">
 
-## Paper
+**🎯 Four metrics at once**
 
-> **Multimodal Deep Learning for Calibrated, Dose-Specific Drug Combination Repurposing: A Prospectively Validated
-> AI Framework**
-> Muhammad Javad Heydari, Bryan Lye, Parvin Mansouri, Thomas Marsland, Kavya Pamulapati, Robert Vary,
-> Hermione Allen, Kaylene J Simpson, John G Lock, James McKenna, Fatemeh Vafaee
+Jointly predicts Loewe, Bliss, HSA and ZIP synergy, preserving the relationships between them.
 
-Preprint: [bioRxiv 10.1101/2025.11.05.686895](https://www.biorxiv.org/content/10.1101/2025.11.05.686895v2)
-(posted under the title *Uncertainty-Aware Deep Learning for Multi-Metric and Dose-Specific Prediction of Drug
-Synergy*).
+</td>
+<td width="33%" valign="top">
 
-## Dataset
+**📏 Calibrated confidence**
 
-| File | Contents |
-|---|---|
-| [`data/AlgoraeOS_DrugComb_curated_synergy.csv`](data/AlgoraeOS_DrugComb_curated_synergy.csv) | 359,556 curated drug–drug–cell line combinations (one row each) with synergy scores |
-| [`data/drugs.csv`](data/drugs.csv) | The 3,129 drugs in the dataset: DrugComb ID → PubChem CID, name, ChEMBL, DrugBank, InChIKey, SMILES |
-| [`data/cell_lines.csv`](data/cell_lines.csv) | The 170 cancer cell lines: DrugComb ID → name, Cellosaurus accession, DepMap ID, CCLE name |
+Every prediction carries aleatoric (data) and epistemic (model) uncertainty.
 
-### How it was built
+</td>
+<td width="33%" valign="top">
 
-The data come from [DrugComb](https://drugcomb.fimm.fi) v1.5, which harmonises combination-screen metadata,
-dose–response formats and SynergyFinder scores. Starting from DrugComb, we:
+**💊 Dose-specific**
 
-1. kept dual therapies (drug 1 ≠ drug 2) in cell lines with matched transcriptomic profiles (CCLE);
-2. removed records with missing synergy values, DrugComb quality flags, or any synergy score outside [−100, 100];
-3. resolved structure discrepancies across DrugComb, DrugBank, PubChem, ChEMBL and MSigDB/KEGG by consensus, and
-   excluded only compounds with no recoverable chemical structure;
-4. collapsed duplicate (drug 1, drug 2, cell line) triplets using the within-block median.
+Reconstructs full dose–response surfaces at single-concentration resolution, not one averaged score.
 
-During training, each combination is also used in swapped order (drug 2, drug 1). That doubles the records seen by
-the model, but only one order is stored here. The paper's Methods and Supplementary Note 3 give full details.
+</td>
+</tr>
+<tr>
+<td valign="top">
 
-### Columns of `AlgoraeOS_DrugComb_curated_synergy.csv`
+**🧬 Biologically grounded**
 
-| Column | Description |
-|---|---|
-| `block_id` | DrugComb experiment (block) ID |
-| `drug_row_id`, `drug_col_id` | DrugComb IDs of drug 1 and drug 2 (look up names in `drugs.csv`) |
-| `drug_row_pubchem_cid_single`, `drug_col_pubchem_cid_single` | PubChem CIDs of drug 1 and drug 2 |
-| `cell_line_id` | DrugComb cell line ID (look up names in `cell_lines.csv`) |
-| `conc_r_unit`, `conc_c_unit` | Concentration units for drug 1 and drug 2 |
-| `synergy_zip`, `synergy_loewe`, `synergy_hsa`, `synergy_bliss` | Synergy scores (SynergyFinder), each within [−100, 100] |
-| `ic50_row`, `ic50_col` | IC50 of drug 1 and drug 2 |
-| `ri_row`, `ri_col` | Relative inhibition of drug 1 and drug 2 alone |
-| `css_row`, `css_col`, `css_ri` | Combination sensitivity scores |
-| `S_sum`, `S_mean`, `S_max` | Synergy–antagonism (S) scores |
-| `quality` | DrugComb quality flag (empty for every row, since flagged records were removed) |
+Drugs: RDKit fingerprints + ChemBERTa SMILES embeddings. Cell lines: CCLE expression through a pathway-constrained
+(MSigDB) layer.
 
-### Loading the data
+</td>
+<td valign="top">
+
+**🧪 Prospectively validated**
+
+An anchor compound absent from training, screened with 24 partners in 3 cancer cell lines (2,592 measurements):
+rank order preserved, Spearman's ρ = 0.51–0.59 (P < 0.001).
+
+</td>
+<td valign="top">
+
+**📈 Trained at scale**
+
+~5.5 million dose-specific inhibition records and 736,246 order-augmented synergy records from DrugComb.
+
+</td>
+</tr>
+</table>
+
+## The dataset
+
+| File | Rows | What it contains |
+|---|---:|---|
+| [`data/AlgoraeOS_DrugComb_curated_synergy.csv`](data/AlgoraeOS_DrugComb_curated_synergy.csv) | 359,556 | One row per drug–drug–cell line combination, with four synergy scores and monotherapy summaries |
+| [`data/drugs.csv`](data/drugs.csv) | 3,129 | DrugComb drug ID → PubChem CID, name, ChEMBL, DrugBank, InChIKey, SMILES |
+| [`data/cell_lines.csv`](data/cell_lines.csv) | 170 | DrugComb cell line ID → name, tissue, Cellosaurus accession, DepMap ID, CCLE name |
+
+Full column descriptions are in the [data dictionary](data/README.md).
+
+### Synergy score distributions
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/figures/synergy_distributions_dark.svg">
+  <img src="assets/figures/synergy_distributions_light.svg" alt="Histograms of Loewe, Bliss, HSA and ZIP synergy scores. All four are centred near zero; the share of combinations scoring above 10 is 5.3% for Loewe, 13.2% for Bliss, 6.4% for HSA and 11.4% for ZIP." width="100%">
+</picture>
+
+### Coverage by tissue
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/figures/tissue_coverage_dark.svg">
+  <img src="assets/figures/tissue_coverage_light.svg" alt="Combinations per tissue: skin 133,809 (24 cell lines), lung 44,832 (34), breast 38,023 (38), ovary 33,877 (12), large intestine 29,394 (15), brain 26,189 (6), kidney 24,709 (5), blood and lymphoid 18,559 (8), prostate 5,533 (3), urinary tract 2,245 (14), bone 1,903 (3), stomach 206 (3), soft tissue 189 (3), liver 78 (1), pancreas 10 (1)." width="75%">
+</picture>
+
+## Quick start
+
+<details open>
+<summary><b>Python (pandas)</b></summary>
 
 ```python
 import pandas as pd
 
 base = "https://raw.githubusercontent.com/VafaeeLab/AlgoraeOS/main/data/"
 data = pd.read_csv(base + "AlgoraeOS_DrugComb_curated_synergy.csv")
-drugs = pd.read_csv(base + "drugs.csv")
-cells = pd.read_csv(base + "cell_lines.csv")
+drugs = pd.read_csv(base + "drugs.csv").set_index("drugcomb_drug_id")
+cells = pd.read_csv(base + "cell_lines.csv").set_index("drugcomb_cell_line_id")
 
-names = drugs.set_index("drugcomb_drug_id")["drug_name"]
-data["drug_1"] = data["drug_row_id"].map(names)
-data["drug_2"] = data["drug_col_id"].map(names)
-data["cell_line"] = data["cell_line_id"].map(cells.set_index("drugcomb_cell_line_id")["cell_line_name"])
+data["drug_1"] = data["drug_row_id"].map(drugs["drug_name"])
+data["drug_2"] = data["drug_col_id"].map(drugs["drug_name"])
+data["cell_line"] = data["cell_line_id"].map(cells["cell_line_name"])
+data["tissue"] = data["cell_line_id"].map(cells["tissue"])
+
+print(data[["drug_1", "drug_2", "cell_line", "synergy_bliss", "synergy_zip"]].head())
 ```
+
+</details>
+
+<details>
+<summary><b>R</b></summary>
+
+```r
+base  <- "https://raw.githubusercontent.com/VafaeeLab/AlgoraeOS/main/data/"
+data  <- read.csv(paste0(base, "AlgoraeOS_DrugComb_curated_synergy.csv"))
+drugs <- read.csv(paste0(base, "drugs.csv"))
+cells <- read.csv(paste0(base, "cell_lines.csv"))
+
+data$drug_1    <- drugs$drug_name[match(data$drug_row_id, drugs$drugcomb_drug_id)]
+data$drug_2    <- drugs$drug_name[match(data$drug_col_id, drugs$drugcomb_drug_id)]
+data$cell_line <- cells$cell_line_name[match(data$cell_line_id, cells$drugcomb_cell_line_id)]
+head(data[, c("drug_1", "drug_2", "cell_line", "synergy_bliss", "synergy_zip")])
+```
+
+</details>
+
+A runnable version with a few summary statistics is in [`examples/quickstart.py`](examples/quickstart.py).
+
+## How the dataset was built
+
+```mermaid
+flowchart LR
+    A[("DrugComb v1.5<br/>combination screens")] --> B["Dual therapies<br/>drug 1 ≠ drug 2"]
+    B --> C["Cell lines with matched<br/>CCLE transcriptomes"]
+    C --> D["Quality control<br/>no missing scores · no QC flags<br/>scores within −100…100"]
+    D --> E["Structure consensus<br/>DrugComb · DrugBank · PubChem<br/>ChEMBL · MSigDB/KEGG"]
+    E --> F["Duplicate triplets collapsed<br/>within-block median"]
+    F --> G[("359,556 combinations<br/>3,129 drugs · 170 cell lines")]
+```
+
+1. **Source.** [DrugComb](https://drugcomb.fimm.fi) v1.5 harmonises combination-screen metadata, dose–response formats
+   and SynergyFinder scores; each experiment is a (drug A, drug B, cell line) concentration-grid block.
+2. **Scope.** Dual therapies in cell lines with matched transcriptomic profiles. The transcriptome requirement is a model
+   input, not a quality filter, and accounts for most excluded records.
+3. **Quality control.** Records with missing synergy values, DrugComb quality flags or any score outside [−100, 100]
+   were removed. Quality- and structure-related exclusions together removed only 3.15% of the dual-therapy corpus.
+4. **Chemistry.** Structure discrepancies were reconciled by consensus, resolving 4,305 of 4,328 compounds (99.47%);
+   only compounds with no recoverable structure were excluded.
+5. **Deduplication.** Duplicate triplets were collapsed using the within-block median. During training each combination
+   is also used in swapped order (drug 2, drug 1), giving 736,246 records; only one order is stored here.
+
+Full details: the paper's Methods, Supplementary Note 3 and Supplementary Figure 19.
 
 ## Data and code availability
 
-- **Raw data:** the original training data are available from the DrugComb portal: <https://drugcomb.fimm.fi>.
-- **Curated data:** this repository.
-- **Validation data:** provided in the paper's Supplementary Information (Supplementary Table 11).
-- **Predictions:** browse or batch-query AlgoraeOS predictions for 3,000+ drugs across 170 cell lines at
-  <https://vafaeelab.github.io/AlgoraeOS_UI/>.
-- **Model code:** the full model implementation is proprietary and is not included here.
+| | |
+|---|---|
+| 🗃️ **Raw data** | The original training data are available from the DrugComb portal: <https://drugcomb.fimm.fi> |
+| 📦 **Curated data** | This repository |
+| 🧪 **Validation data** | The paper's Supplementary Information (Supplementary Table 11) |
+| 🔎 **Predictions** | Single and batch queries for 3,000+ drugs across 170 cell lines: <https://vafaeelab.github.io/AlgoraeOS_UI/> |
+| 🔒 **Model code** | The full model implementation is proprietary and is not included |
+
+## Paper
+
+> **Multimodal Deep Learning for Calibrated, Dose-Specific Drug Combination Repurposing: A Prospectively Validated AI
+> Framework**
+>
+> Muhammad Javad Heydari, Bryan Lye, Parvin Mansouri, Thomas Marsland, Kavya Pamulapati, Robert Vary,
+> Hermione Allen, Kaylene J Simpson, John G Lock, James McKenna, Fatemeh Vafaee
+>
+> UNSW Sydney · Peter MacCallum Cancer Centre · University of Melbourne · Algorae Pharmaceuticals · UNSW AI Institute
+
+Preprint: [bioRxiv 10.1101/2025.11.05.686895](https://www.biorxiv.org/content/10.1101/2025.11.05.686895v2),
+posted under the title *Uncertainty-Aware Deep Learning for Multi-Metric and Dose-Specific Prediction of Drug Synergy*.
 
 ## Citation
 
-If you use this dataset, please cite the AlgoraeOS paper and DrugComb:
+If you use this dataset, please cite the AlgoraeOS paper and DrugComb. GitHub's **Cite this repository** button (in
+the sidebar) gives the same reference in APA and BibTeX.
 
 ```bibtex
 @article{heydari2025algoraeos,
@@ -126,12 +225,47 @@ If you use this dataset, please cite the AlgoraeOS paper and DrugComb:
   year    = {2025},
   doi     = {10.1101/2025.11.05.686895}
 }
+
+@article{zheng2021drugcomb,
+  title   = {DrugComb update: a more comprehensive drug sensitivity data repository and analysis portal},
+  author  = {Zheng, Shuyu and others},
+  journal = {Nucleic Acids Research},
+  volume  = {49},
+  number  = {W1},
+  pages   = {W174--W184},
+  year    = {2021},
+  doi     = {10.1093/nar/gkab438}
+}
 ```
 
-DrugComb: Zheng S. *et al.* DrugComb update: a more comprehensive drug sensitivity data repository and analysis
-portal. *Nucleic Acids Research* 49, W174–W184 (2021). The data here are derived from DrugComb; please also follow
-DrugComb's terms of use.
+The data are derived from DrugComb; please also follow DrugComb's terms of use.
+
+## Repository layout
+
+```
+AlgoraeOS/
+├── data/
+│   ├── AlgoraeOS_DrugComb_curated_synergy.csv   # the curated combinations
+│   ├── drugs.csv                                # drug ID → names and identifiers
+│   ├── cell_lines.csv                           # cell line ID → name, tissue, identifiers
+│   └── README.md                                # data dictionary
+├── examples/quickstart.py                       # load, join names, summarise
+├── scripts/make_figures.py                      # regenerates the figures above
+├── assets/                                      # logos and figures
+└── CITATION.cff                                 # "Cite this repository" metadata
+```
+
+## Acknowledgements
+
+AlgoraeOS was developed by the UNSW Biomedical AI Laboratory in partnership with Algorae Pharmaceuticals, with
+prospective validation by the Victorian Centre for Functional Genomics at the Peter MacCallum Cancer Centre. We thank
+the DrugComb team for making their data openly available.
 
 ## Contact
 
-Prof. Fatemeh Vafaee, UNSW Biomedical AI Laboratory: [f.vafaee@unsw.edu.au](mailto:f.vafaee@unsw.edu.au)
+**Prof. Fatemeh Vafaee**, UNSW Biomedical AI Laboratory, [f.vafaee@unsw.edu.au](mailto:f.vafaee@unsw.edu.au)
+Questions about the dataset? [Open an issue](https://github.com/VafaeeLab/AlgoraeOS/issues).
+
+<div align="center">
+<sub>© UNSW Biomedical AI Laboratory × Algorae Pharmaceuticals · For research use only</sub>
+</div>

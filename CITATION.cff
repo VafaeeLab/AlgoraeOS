@@ -1,0 +1,67 @@
+cff-version: 1.2.0
+message: "If you use this dataset, please cite the AlgoraeOS paper below and DrugComb."
+title: "AlgoraeOS: curated drug combination dataset"
+type: dataset
+repository-code: "https://github.com/VafaeeLab/AlgoraeOS"
+url: "https://vafaeelab.github.io/AlgoraeOS_UI/"
+keywords:
+  - drug synergy
+  - drug combination
+  - deep learning
+  - uncertainty quantification
+  - DrugComb
+authors:
+  - family-names: Heydari
+    given-names: Muhammad Javad
+  - family-names: Lye
+    given-names: Bryan
+  - family-names: Mansouri
+    given-names: Parvin
+  - family-names: Marsland
+    given-names: Thomas
+  - family-names: Pamulapati
+    given-names: Kavya
+  - family-names: Vary
+    given-names: Robert
+  - family-names: Allen
+    given-names: Hermione
+  - family-names: Simpson
+    given-names: Kaylene J
+  - family-names: Lock
+    given-names: John G
+  - family-names: McKenna
+    given-names: James
+  - family-names: Vafaee
+    given-names: Fatemeh
+    email: f.vafaee@unsw.edu.au
+    affiliation: "UNSW Biomedical AI Laboratory, UNSW Sydney"
+preferred-citation:
+  type: article
+  title: "Uncertainty-Aware Deep Learning for Multi-Metric and Dose-Specific Prediction of Drug Synergy"
+  journal: "bioRxiv"
+  year: 2025
+  doi: "10.1101/2025.11.05.686895"
+  url: "https://www.biorxiv.org/content/10.1101/2025.11.05.686895v2"
+  authors:
+    - family-names: Heydari
+      given-names: Muhammad Javad
+    - family-names: Lye
+      given-names: Bryan
+    - family-names: Mansouri
+      given-names: Parvin
+    - family-names: Marsland
+      given-names: Thomas
+    - family-names: Pamulapati
+      given-names: Kavya
+    - family-names: Vary
+      given-names: Robert
+    - family-names: Allen
+      given-names: Hermione
+    - family-names: Simpson
+      given-names: Kaylene J
+    - family-names: Lock
+      given-names: John G
+    - family-names: McKenna
+      given-names: James
+    - family-names: Vafaee
+      given-names: Fatemeh
